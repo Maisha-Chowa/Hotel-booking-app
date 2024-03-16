@@ -2,3 +2,24 @@ npm i express cors dotenv mongodb mongoose
 
 npm i @types/cors @types/express @types/node ts-node typescript nodemon --save-dev
 
+
+Deployment 
+We will gonna deploy it in the render.com
+First of all check that there is tsconfig.json file in the backend folder.
+if not then run "npx tsc --init". it will create a tsconfig.json file 
+
+then in tsconfig.json file in the 
+ "compilerOptions": {
+
+    "outDir": "./dist",
+Then in package.json file
+"scripts": {
+    "dev": "nodemon",
+    "build":"npm install && npx tsc",
+    "start": "node ./dist/index.js",}
+
+Then in the both frontend and backend terminal separately run 
+npm run build
+
+in the backend folder index.ts file
+app.use(express.static(path.join(__dirname, "../../frontend/dist")));
