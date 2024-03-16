@@ -23,3 +23,9 @@ npm run build
 
 in the backend folder index.ts file
 app.use(express.static(path.join(__dirname, "../../frontend/dist")));
+
+in render.com 
+build cmd
+cd frontend && npm install && npm run build && cd ../backend && npm run build
+start cmd
+cd backend && npm start
