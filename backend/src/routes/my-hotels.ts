@@ -4,7 +4,7 @@ import cloudinary from "cloudinary";
 import { HotelType } from "../shared/type";
 import Hotel from "../models/hotel";
 import verifyToken from "../middleware/auth";
-import {body}  from "express-validator";
+import { body } from "express-validator";
 
 const router = Router();
 
@@ -39,6 +39,7 @@ router.post(
     try {
       const imageFiles = req.files as Express.Multer.File[];
       const newHotel: HotelType = req.body;
+      console.log(newHotel);
       //* 1: Upload the images into cloudinary
       const uploadPromises = imageFiles.map(async (image) => {
         const b64 = Buffer.from(image.buffer).toString("base64");
@@ -64,5 +65,27 @@ router.post(
     }
   }
 );
+
+router.get("/", verifyToken, async (req: Request, res: Response) => {
+  try {
+    const hotels = await Hotel.find({ userId: req.userId });
+    res.json(hotels);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching hotels" });
+  }
+});
+
+router.get("/:id", verifyToken, async (req: Request, res: Response) => {
+  const id = req.params.id.toString();
+  try {
+    const hotel = await Hotel.findOne({
+      _id: id,
+      userId: req.userId,
+    });
+    res.json(hotel);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching hotels" });
+  }
+});
 
 export default router;
